@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.UserMapper">
+    <resultMap id="userResultMap" type="com.netscu.netscu.Entity.User">
+        <id property="Id" column="Id" />
+
+        <result property="Name" column="Name" />
+        <result property="Email" column="Email" />
+        <result property="Mobile" column="Mobile" />
+        <result property="Password" column="Password" />
+        <result property="Gender" column="Gender" />
+        <result property="Birthday" column="Birthday" />
+        <result property="Province" column="Province" />
+        <result property="City" column="City" />
+        <result property="Description" column="Description" />
+        <result property="Status" column="Status" />
+        <result property="CreateTime" column="CreateTime" />
+    </resultMap>
+
+    <select id="Test" resultType="Map">
+        select * from users;
+    </select>
+
+    <select id="SelById" parameterType="java.lang.String" resultType="Map" >
+        select  from users where Id = #{Id};
+    </select>
+
+    <insert id="Insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.netscu.netscu.Entity.User">
+        insert users(id, name, email, mobile, password, gender, birthday, province, city, description, status, createTime)
+            values
+                (null, #{name}, #{email}, #{mobile}, #{password}, #{gender}, #{birthday}, #{province}, #{city}, #{description}, 1, #{createTime});
+    </insert>
+
+    <select id="SelByName" resultType="com.netscu.netscu.Entity.User">
+        select * from users;
+    </select>
+    <select id="SelByMobile" resultType="com.netscu.netscu.Entity.User">
+        select * from users where mobile=#{Mobile};
+    </select>
+    <select id="SelByEmail" resultType="com.netscu.netscu.Entity.User">
+        select * from users where email=#{Email};
+    </select>
+
+</mapper>
