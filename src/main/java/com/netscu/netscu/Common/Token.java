@@ -1,6 +1,5 @@
 package com.netscu.netscu.Common;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.netscu.netscu.Entity.User;
 import io.jsonwebtoken.*;
 import org.bouncycastle.util.encoders.Base64;
@@ -19,12 +18,13 @@ public class Token {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
         Date Now = new Date(nowMillis);
-        Date expDate = new Date(SystemConstant.JWT_TTL);
+        Date expDate = new Date(nowMillis+SystemConstant.JWT_TTL);
         SecretKey secretKey = generalKey();
         JwtBuilder token = Jwts.builder()
-                .setId(user.getId())
+                .setId("jwt") //此处最好设置一个不重复的值防止重放攻击
                 .setIssuedAt(Now)//设置签发日期
                 .setExpiration(expDate)
+                .setSubject(user.getId())
                 .signWith(signatureAlgorithm, secretKey);
         return token.compact();
     }
