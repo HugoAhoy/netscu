@@ -1,6 +1,7 @@
 package com.netscu.netscu.Controller;
 
 import com.netscu.netscu.Annotations.UserLoginToken;
+import com.netscu.netscu.Common.TokenUtil;
 import com.netscu.netscu.Entity.User;
 import com.netscu.netscu.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,9 @@ public class UserController {
     @RequestMapping("LogTokenTest")
     @UserLoginToken
     public String LogTokenTest(){
-        return "token通过验证";
+        String userId =TokenUtil.getTokenUserId();
+        System.out.println(userId);
+        return "token通过验证， uid 为"+userId;
     }
 
     @RequestMapping("test")
