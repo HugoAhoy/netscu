@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -23,12 +22,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("getUser/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String GetUserById(@PathVariable String id) {
-        return userService.SelById(id).toString();
-    }
-
     @PostMapping("Registration")
     @ResponseStatus(HttpStatus.CREATED)
     public Map AddUser(@RequestBody User user){
@@ -40,6 +33,49 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Map LoginUser(@RequestBody User user){
         return userService.Login(user);
+    }
+
+    @GetMapping("Info")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetMyInfo(){
+        String userId =TokenUtil.getTokenUserId();
+        return userService.SelByInfoId(userId, userId);
+    }
+
+    @GetMapping("Info/{id}")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetOtherInfo(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return userService.SelByInfoId(id, userId);
+    }
+
+    @PutMapping("Modify")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map ModifyMyInfo(@RequestBody User user){
+        String userId = TokenUtil.getTokenUserId();
+        user.setId(userId);
+        return userService.ModifyMyInfo(user);
+    }
+
+    @PostMapping("Follow")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map FollowUser(@RequestBody User fans){
+        String Id = fans.getId();
+        String userId = TokenUtil.getTokenUserId();
+        return userService.FollowById(userId, Id);
+    }
+
+    @PostMapping("Unfollow")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map UnfollowUser(@RequestBody User fans){
+        String Id = fans.getId();
+        String userId = TokenUtil.getTokenUserId();
+        return userService.UnfollowById(userId, Id);
     }
 
 

@@ -19,8 +19,24 @@ import java.util.Map;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
+
     public User SelById(String id){
         return userMapper.SelById(id);
+    }
+
+    public Map SelByInfoId(String id, String MyId){
+        HashMap<String, Object> result = (HashMap<String, Object>) userMapper.SelInfoById(id);
+        Integer fanNum = userMapper.GetFansNum(id);
+        Integer collectionNum = userMapper.GetCollectionNum(id);
+        Integer postNum = userMapper.GetPostNum(id);
+        Boolean followed = (userMapper.GetFollowed(MyId, id) > 0);
+        Integer followNum = userMapper.GetFollowNum(id);
+        result.put("postNum", postNum);
+        result.put("collectNum", collectionNum);
+        result.put("fansNum", fanNum);
+        result.put("followed", followed);
+        result.put("followNum", followNum);
+        return result;
     }
 
     public Map Add(User user){
@@ -52,18 +68,54 @@ public class UserService {
     public Map Login(User user) {
         HashMap<String, Object> result = new HashMap<>();
         String token = null;
+        String status = null;
         List<User> returnUsers = userMapper.SelByName(user.getName());
         for(User U: returnUsers){
             if(U.getPassword().equals(user.getPassword())){
                 token = Token.createJWT(U);
+                status = U.getStatus();
                 break;
             }
         }
         if(null != token){
             result.put("token", token);
+            result.put("status", status);
             result.put("success", true);
         }
         else{
+            result.put("success", false);
+        }
+        return result;
+    }
+
+    public Map ModifyMyInfo(User user) {
+        HashMap<String, Boolean> result = new HashMap<>();
+        if (userMapper.ModifyInfoById(user) >= 1){
+            result.put("success", true);
+        }
+        else {
+            result.put("success", false);
+        }
+        return result;
+    }
+
+    public Map FollowById(String userId, String id) {
+        HashMap<String ,Boolean> result = new HashMap<>();
+        if(userMapper.FollowById(userId, id) >= 1){
+            result.put("success", true);
+        }
+        else {
+            result.put("success", false);
+        }
+        return result;
+    }
+
+    public Map UnfollowById(String userId, String id) {
+        HashMap<String ,Boolean> result = new HashMap<>();
+        if(userMapper.UnfollowById(userId, id) >= 1){
+            result.put("success", true);
+        }
+        else {
             result.put("success", false);
         }
         return result;

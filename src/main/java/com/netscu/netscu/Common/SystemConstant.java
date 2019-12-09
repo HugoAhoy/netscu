@@ -7,7 +7,8 @@ package com.netscu.netscu.Common;
  */
 public class SystemConstant {
     public static final String JWT_SECRET = "SECRET";
-    public static final long JWT_TTL = 1000*60*30;
+    //测试的时候吧超时时长调大
+    public static final long JWT_TTL = 1000*60*60*5;
     public static final String JWT_ERRCODE_EXPIRE ="408";
     public static final String JWT_ERRCODE_FAIL="500";
 }

@@ -21,18 +21,22 @@
         select * from users;
     </select>
 
-    <select id="SelById" parameterType="java.lang.String" resultType="com.netscu.netscu.Entity.User" >
+    <select id="SelById" parameterType="java.lang.String" resultType="com.netscu.netscu.Entity.User">
         select * from users where id = #{Id};
+    </select>
+
+    <select id="SelInfoById" parameterType="java.lang.String" resultType="Map" >
+        select id, name, email, mobile, gender, birthday, province, city, description, status, createTime from users where id = #{Id};
     </select>
 
     <insert id="Insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.netscu.netscu.Entity.User">
         insert users(id, name, email, mobile, password, gender, birthday, province, city, description, status, createTime)
             values
-                (null, #{name}, #{email}, #{mobile}, #{password}, #{gender}, #{birthday}, #{province}, #{city}, #{description}, 1, #{createTime});
+                (null, #{name}, #{email}, #{mobile}, #{password}, #{gender}, #{birthday}, #{province}, #{city}, #{description}, 1, current_timestamp );
     </insert>
 
     <select id="SelByName" resultType="com.netscu.netscu.Entity.User">
-        select * from users;
+        select * from users where  name =#{name};
     </select>
     <select id="SelByMobile" resultType="com.netscu.netscu.Entity.User">
         select * from users where mobile=#{Mobile};
@@ -41,4 +45,35 @@
         select * from users where email=#{Email};
     </select>
 
+    <select id="GetFansNum" resultType="Integer">
+        select count(fanId) from follows where followId = #{Id};
+    </select>
+
+    <select id="GetPostNum" resultType="Integer">
+        select  count(id) from posts where uid=#{Id};
+    </select>
+
+    <select id="GetCollectionNum" resultType="Integer">
+        select  count(id) from collections where uid=#{Id};
+    </select>
+
+    <select id="GetFollowed" resultType="Integer">
+        select count(*) from follows where followId=#{followId} and fanId =#{fanId};
+    </select>
+
+    <select id="GetFollowNum" resultType="Integer">
+        select count(followId) from follows where fanId=#{Id};
+    </select>
+
+    <update id="ModifyInfoById" parameterType="com.netscu.netscu.Entity.User">
+        update users set name=#{name}, email=#{email}, mobile=#{mobile}, gender=#{gender}, birthday=#{birthday}, province=#{province}, city=#{city}, description=#{description} where id=#{id};
+    </update>
+
+    <insert id="FollowById" parameterType="java.lang.String">
+        insert into follows (followId, fanId) values (#{userId}, #{id});
+    </insert>
+
+    <insert id="UnfollowById" parameterType="java.lang.String">
+        delete from follows where followId= #{userId} and fanId= #{id};
+    </insert>
 </mapper>

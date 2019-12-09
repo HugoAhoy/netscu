@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.CateMapper">
+    <select id="GetBasicInfo" resultType="Map">
+        select id, name, icon from categories;
+    </select>
+
+    <select id="SelById" parameterType="java.lang.String" resultType="Map">
+        select * from categories where id =#{id};
+    </select>
+</mapper>

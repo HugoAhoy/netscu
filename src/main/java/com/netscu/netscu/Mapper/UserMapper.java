@@ -14,10 +14,20 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
     User SelById(String Id);
+    Map SelInfoById(String id);
     Integer Insert(User user);
     List<User> SelByName(String name);
     User SelByMobile(String Mobile);
     User SelByEmail(String Email);
+    Integer GetFansNum(String Id);
+    Integer GetCollectionNum(String Id);
+    Integer GetPostNum(String Id);
+    Integer GetFollowed(String followId, String fanId);
+    Integer GetFollowNum(String Id);
+    Integer ModifyInfoById(User user);
+    Integer FollowById(String userId, String id);
+    Integer UnfollowById(String userId, String id);
 
     List<Map> Test();
+
 }

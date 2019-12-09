@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.CommentMapper">
+    <insert id="Insert" parameterType="com.netscu.netscu.Entity.Comment">
+        insert into comments(id, uid, content, supportId, fatherId, isDeleted, createTime) values (null ,#{uid}, #{content}, #{supportId}, #{fatherId}, 0, current_timestamp );
+    </insert>
+
+    <select id="SelBySupportId" parameterType="java.lang.String" resultType="Map">
+        select id, uid, content, fatherId, createTime from comments where supportId = #{supportId} and isDeleted = 0;
+    </select>
+
+    <update id="DeleteById" parameterType="java.lang.String">
+        update comments set isDeleted = 1 where id = #{id} and uid = #{userId};
+    </update>
+
+</mapper>
