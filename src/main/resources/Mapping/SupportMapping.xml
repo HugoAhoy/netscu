@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.SupportMapper">
+    <select id="GetInfo" parameterType="java.lang.Integer" resultType="Map">
+        select supports.id, uid, name, content, supports.createTime, supports.updateTime
+            from supports, users
+            where uid = users.id and supports.postId = #{id}
+            order by supports.createTime limit #{from}, #{to};
+    </select>
+</mapper>

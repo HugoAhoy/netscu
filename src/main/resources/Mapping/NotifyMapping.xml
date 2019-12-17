@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.NotifyMapper">
+    <select id="GetMyNotify" parameterType="java.lang.String" resultType="Map">
+        select id,postId, uid, type, isRead, createTime  from notifications natural join (select id postId, title from posts  where uid = #{userId}) ordered by isRead ASC, create DESC;
+    </select>
+
+    <update id="SetRead" parameterType="java.lang.String">
+        update notifications set isRead = 1 where toUid = #{userId} and id=#{id};
+    </update>
+    <insert id="AddNotify" parameterType="java.lang.String">
+        insert notifications(id, uid, toUid, type, postId, isRead, createTime) values (null, #{userId},(select uid from posts where id= #{id}) type, #{id}, 0, current_timestamp );
+    </insert>
+</mapper>

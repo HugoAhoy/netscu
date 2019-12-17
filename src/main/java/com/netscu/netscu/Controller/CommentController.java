@@ -27,6 +27,7 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("Add")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.CREATED)
     public Map AddComment(@RequestBody Comment comment){
@@ -36,6 +37,7 @@ public class CommentController {
     }
 
     @GetMapping("{supportId}")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map AddComment(@PathVariable String supportId){
@@ -43,6 +45,7 @@ public class CommentController {
     }
 
     @DeleteMapping("{id}")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public void DeleteComment(@PathVariable String id){

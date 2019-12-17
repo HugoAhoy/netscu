@@ -23,6 +23,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("Registration")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     public Map AddUser(@RequestBody User user){
         System.out.println(user.toString());
@@ -30,12 +31,14 @@ public class UserController {
     }
 
     @PostMapping("Login")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     public Map LoginUser(@RequestBody User user){
         return userService.Login(user);
     }
 
     @GetMapping("Info")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map GetMyInfo(){
@@ -44,6 +47,7 @@ public class UserController {
     }
 
     @GetMapping("Info/{id}")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map GetOtherInfo(@PathVariable String id){
@@ -52,6 +56,7 @@ public class UserController {
     }
 
     @PutMapping("Modify")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.CREATED)
     public Map ModifyMyInfo(@RequestBody User user){
@@ -61,6 +66,7 @@ public class UserController {
     }
 
     @PostMapping("Follow")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.CREATED)
     public Map FollowUser(@RequestBody User fans){
@@ -70,6 +76,7 @@ public class UserController {
     }
 
     @PostMapping("Unfollow")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.CREATED)
     public Map UnfollowUser(@RequestBody User fans){
@@ -80,6 +87,7 @@ public class UserController {
 
 
     @RequestMapping("LogTokenTest")
+    @CrossOrigin
     @UserLoginToken
     public String LogTokenTest(){
         String userId =TokenUtil.getTokenUserId();
@@ -88,6 +96,7 @@ public class UserController {
     }
 
     @RequestMapping("test")
+    @CrossOrigin
     public List<Map> Test(){
         return userService.Test();
     }

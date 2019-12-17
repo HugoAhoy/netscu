@@ -11,10 +11,10 @@ import java.util.Date;
  * @time 23:56
  */
 public class Category {
-    String id;
-    String name;
-    String icon;
-    String description;
+    private String id;
+    private String name;
+    private String icon;
+    private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

@@ -11,11 +11,11 @@ import java.util.Date;
  * @time 20:49
  */
 public class Comment {
-    String id;
-    String uid;
-    String content;
-    String supportId;
-    String fatherId;
+    private String id;
+    private String uid;
+    private String content;
+    private String supportId;
+    private String fatherId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

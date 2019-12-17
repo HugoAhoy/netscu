@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.PostMapper">
+    <insert id="Insert" parameterType="com.netscu.netscu.Entity.Post" useGeneratedKeys="true" keyProperty="id">
+        insert into posts(id, uid, cateId, title, summary, content, viewNum, likeNum, collectionNum, supportNum, createTime) values (null, #{uid}, #{cateId}, #{title}, #{summary}, #{content}, 0, 0, 0, 0, current_timestamp );
+    </insert>
+    <update id="ModifyById" parameterType="com.netscu.netscu.Entity.Post">
+        update posts set cateId = #{cateId}, title=#{title}, summary=#{summary}, content=#{content} where id = #{id} and uid=#{uid};
+    </update>
+    <delete id="DeleteById" parameterType="java.lang.String">
+        delete from posts where id =#{id} and uid =#{userId};
+    </delete>
+
+    <select id="GetBasicInfo" parameterType="java.lang.Integer" resultType="Map">
+        select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
+            from posts order by createTime
+             limit #{from}, #{to} ;
+    </select>
+
+    <select id="GetInfo" parameterType="java.lang.String" resultType="Map">
+        select *
+            from posts
+            natural join (select id as cateId,name as cateName FROM categories) as c
+            natural join (select id as uid, name from users) as u
+            where id = #{id};    </select>
+
+    <update id="AddView" parameterType="java.lang.String">
+        update posts set viewNum = viewNum+'1' where id = #{id};
+    </update>
+
+    <insert id="CollectPost" parameterType="java.lang.String">
+        insert into collections(id, uid, postId, createTime) values (null, #{userId}, #{id}, current_timestamp );
+    </insert>
+
+    <delete id="UncollectPost" parameterType="java.lang.String">
+        delete from collections where postId=#{id} and uid = #{userId};
+    </delete>
+
+    <insert id="LikePost" parameterType="java.lang.String">
+        insert into likepost(id, uid, postId, createTime) values (null, #{userId}, #{id}, current_timestamp );
+    </insert>
+
+    <delete id="UnlikePost" parameterType="java.lang.String">
+        delete from likepost where postId=#{id} and uid = #{userId};
+    </delete>
+
+</mapper>

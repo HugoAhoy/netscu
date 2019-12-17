@@ -69,6 +69,8 @@ public class UserService {
         HashMap<String, Object> result = new HashMap<>();
         String token = null;
         String status = null;
+        System.out.println(user.getName());
+        System.out.println(user.getPassword());
         List<User> returnUsers = userMapper.SelByName(user.getName());
         for(User U: returnUsers){
             if(U.getPassword().equals(user.getPassword())){

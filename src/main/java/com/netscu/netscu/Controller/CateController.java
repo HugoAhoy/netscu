@@ -20,6 +20,7 @@ public class CateController {
     CateService cateService;
 
     @GetMapping("BasicInfo")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map GetBasicInfo(){
@@ -27,6 +28,7 @@ public class CateController {
     }
 
     @GetMapping("Info/{Id}")
+    @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map GetInfo(@PathVariable String Id){
