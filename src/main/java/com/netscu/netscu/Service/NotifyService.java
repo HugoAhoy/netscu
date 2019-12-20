@@ -18,8 +18,18 @@ public class NotifyService {
     @Autowired
     NotifyMapper notifyMapper;
 
-    public List<Map> GetMyNotify(String userId) {
-        return notifyMapper.GetMyNotify(userId);
+    public Map GetMyNotify(String userId, String pageCount, String pageNum) {
+        HashMap<String, Object> result = new HashMap<>();
+        Integer page = Integer.parseInt(pageCount);
+        Integer pernum = Integer.parseInt(pageNum);
+        Integer from = (page-1)*pernum;
+        Integer to = page*pernum;
+        Integer uid = Integer.parseInt(userId);
+        List<Map> Data = notifyMapper.GetMyNotify(uid, from, to);
+        result.put("data", Data);
+        Integer Unread = notifyMapper.GetMyUnread(uid);
+        result.put("Unread", Unread);
+        return result;
     }
 
     public Map SetRead(String id, String userId) {
@@ -34,6 +44,9 @@ public class NotifyService {
     }
 
     public Boolean AddNotification(String id, String userId, String type) {
+        System.out.println(id);
+        System.out.println(userId);
+        System.out.println(type);
         if(notifyMapper.AddNotify(id, userId, type) >= 1){
             return true;
         }

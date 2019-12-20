@@ -1,11 +1,9 @@
 package com.netscu.netscu.Controller;
 
 import com.netscu.netscu.Annotations.UserLoginToken;
-import com.netscu.netscu.Common.Token;
 import com.netscu.netscu.Common.TokenUtil;
 import com.netscu.netscu.Entity.Post;
 import com.netscu.netscu.Service.PostService;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -80,9 +78,16 @@ public class PostController {
     public Map GetInfo(@PathVariable String id){
         String userId = TokenUtil.getTokenUserId();
         Map result = postService.GetInfo(id);
+        System.out.println(result);
+        System.out.println(result.get("uid"));
         String postUid = String.valueOf((Long)result.get("uid"));
         System.out.println("postUid"+postUid);
         result.put("isOwner",postUid.equals(userId));
+        Boolean Liked =postService.GetLikeStatus(id, userId);
+        Boolean Collected = postService.GetCollectStatus(id, userId);
+        result.put("isLiked",Liked);
+        result.put("isCollected", Collected);
+
         return result;
     }
 
@@ -95,13 +100,52 @@ public class PostController {
         return postService.CollectPost(id, userId);
     }
 
-//    @PutMapping("Uncollect/{id}")
-//    @CrossOrigin
-//    @UserLoginToken
-//    @ResponseStatus(HttpStatus.OK)
-//    public Map UncollectPost(@PathVariable String id){
-//        String userId = TokenUtil.getTokenUserId();
-//        return postService.UncollectPost(id, userId);
-//    }
+    @PutMapping("Uncollect/{id}")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map UncollectPost(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return postService.UncollectPost(id, userId);
+    }
+
+    @CrossOrigin
+    @PostMapping("Like/{id}")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map LikePost(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return postService.LikePost(id, userId);
+    }
+
+    @PutMapping("Unlike/{id}")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map UnlikePost(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return postService.UnlikePost(id, userId);
+    }
+
+    @CrossOrigin
+    @GetMapping("MyPost/{PageCount}/{PageNum}")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetMyPost(@PathVariable String PageCount, @PathVariable String PageNum){
+        String userId = TokenUtil.getTokenUserId();
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = postService.GetMyPost(PageCount, PageNum, userId);
+        if(Data.size() == Integer.parseInt(PageNum)){
+            result.put("Finish",false);
+        }
+        else{
+            result.put("Finish",true);
+        }
+        result.put("data",Data);
+        return result;
+    }
+
 
 }

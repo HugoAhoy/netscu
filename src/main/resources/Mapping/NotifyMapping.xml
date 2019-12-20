@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.netscu.netscu.Mapper.NotifyMapper">
-    <select id="GetMyNotify" parameterType="java.lang.String" resultType="Map">
-        select id,postId, uid, type, isRead, createTime  from notifications natural join (select id postId, title from posts  where uid = #{userId}) ordered by isRead ASC, create DESC;
+    <select id="GetMyNotify" parameterType="java.lang.Integer" resultType="Map">
+        select id, postId, name, uid, title, type, isRead, createTime
+        from (select id, postId, type, isRead, uid, createTime from notifications where toUid=#{userId}) as n
+        natural join (select id as postId, title, summary from posts  where uid = #{userId}) as p
+        natural join (select name, id as uid from users) as u
+        order by isRead ASC, createTime DESC
+        limit #{from}, #{to};
     </select>
 
     <update id="SetRead" parameterType="java.lang.String">
         update notifications set isRead = 1 where toUid = #{userId} and id=#{id};
     </update>
     <insert id="AddNotify" parameterType="java.lang.String">
-        insert notifications(id, uid, toUid, type, postId, isRead, createTime) values (null, #{userId},(select uid from posts where id= #{id}) type, #{id}, 0, current_timestamp );
+        insert into notifications(id, uid, toUid, type, postId, isRead,  createTime) values (null, #{userId},(select uid as toUid from posts where id= #{id}), #{type},#{id}, 0, current_timestamp );
     </insert>
+
+    <select id="GetMyUnread" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(id) from notifications where toUid = #{uid} and isRead = 0;
+    </select>
 </mapper>

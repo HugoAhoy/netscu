@@ -23,16 +23,15 @@ public class NotifyController {
     @Autowired
     NotifyService notifyService;
 
-    @GetMapping("Mine")
+    @GetMapping("/{PageCount}/{PageNum}")
     @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
-    public Map GetMyNotify(){
-        HashMap<String, Object> result = new HashMap<>();
+    public Map GetMyNotify(@PathVariable String PageCount, @PathVariable String PageNum){
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
         String userId = TokenUtil.getTokenUserId();
-        List<Map> Data = notifyService.GetMyNotify(userId);
-        result.put("data",Data);
-        return result;
+        return notifyService.GetMyNotify(userId, PageCount, PageNum);
     }
 
     @PutMapping("Read/{id}")

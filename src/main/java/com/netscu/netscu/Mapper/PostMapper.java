@@ -28,4 +28,21 @@ public interface PostMapper {
     Integer CollectPost(String id, String userId);
 
     Integer UncollectPost(String id, String userId);
+
+    Integer LikePost(String id, String userId);
+
+    Integer UnlikePost(String id, String userId);
+
+    List<Map> GetMyPost(Integer from, Integer to, Integer userId);
+
+    void IncLike(String id);
+
+    void DecLike(String id);
+
+    Integer GetLikeStatus(String id, String userId);
+
+    Integer GetCollectStatus(String id, String userId);
+
+    void IncCollect(String id);
+    void DecCollect(String id);
 }

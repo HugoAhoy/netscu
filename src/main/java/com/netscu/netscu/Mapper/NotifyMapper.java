@@ -10,9 +10,11 @@ import java.util.Map;
  */
 public interface NotifyMapper {
 
-    List<Map> GetMyNotify(String userId);
+    List<Map> GetMyNotify(Integer userId,Integer from,Integer to);
 
     Integer SetRead(String id, String userId);
 
     Integer AddNotify(String id, String userId, String type);
+
+    Integer GetMyUnread(Integer uid);
 }

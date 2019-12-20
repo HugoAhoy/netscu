@@ -13,7 +13,7 @@
 
     <select id="GetBasicInfo" parameterType="java.lang.Integer" resultType="Map">
         select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
-            from posts order by createTime
+            from posts order by createTime DESC
              limit #{from}, #{to} ;
     </select>
 
@@ -22,26 +22,58 @@
             from posts
             natural join (select id as cateId,name as cateName FROM categories) as c
             natural join (select id as uid, name from users) as u
-            where id = #{id};    </select>
+            where id = #{id};
+     </select>
 
     <update id="AddView" parameterType="java.lang.String">
         update posts set viewNum = viewNum+'1' where id = #{id};
     </update>
 
     <insert id="CollectPost" parameterType="java.lang.String">
-        insert into collections(id, uid, postId, createTime) values (null, #{userId}, #{id}, current_timestamp );
+        insert into collections(id, uid, postId, isDeleted, createTime) values (null, #{userId}, #{id}, 0, current_timestamp );
     </insert>
 
-    <delete id="UncollectPost" parameterType="java.lang.String">
-        delete from collections where postId=#{id} and uid = #{userId};
-    </delete>
+    <update id="UncollectPost" parameterType="java.lang.String">
+        update collections set isDeleted = 1 where postId=#{id} and uid = #{userId};
+    </update>
 
     <insert id="LikePost" parameterType="java.lang.String">
-        insert into likepost(id, uid, postId, createTime) values (null, #{userId}, #{id}, current_timestamp );
+        insert into likepost(id, uid, postId, isDeleted, createTime) values (null, #{userId}, #{id}, 0, current_timestamp );
     </insert>
 
-    <delete id="UnlikePost" parameterType="java.lang.String">
-        delete from likepost where postId=#{id} and uid = #{userId};
-    </delete>
+    <update id="UnlikePost" parameterType="java.lang.String">
+        update likepost set isDeleted = 1 where postId=#{id} and uid = #{userId};
+    </update>
+
+    <select id="GetMyPost" parameterType="java.lang.Integer" resultType="Map">
+        select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
+            from posts where id =#{userId} order by createTime
+             limit #{from}, #{to} ;
+    </select>
+
+    <update id="IncLike" parameterType="java.lang.String">
+        update posts set likeNum = likeNum+'1' where id = #{id};
+    </update>
+
+    <update id="DecLike" parameterType="java.lang.String">
+        update posts set likeNum = likeNum-'1' where id = #{id};
+    </update>
+
+    <update id="IncCollect" parameterType="java.lang.String">
+        update posts set collectionNum = collectionNum+'1' where id = #{id};
+    </update>
+
+    <update id="DecCollect" parameterType="java.lang.String">
+        update posts set collectionNum = collectionNum-'1' where id = #{id};
+    </update>
+
+
+    <select id="GetLikeStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from likepost where uid =#{userId} and postId=#{id} and isDeleted = 0;
+    </select>
+
+    <select id="GetCollectStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from collections where uid =#{userId} and postId=#{id} and isDeleted = 0;
+    </select>
 
 </mapper>
