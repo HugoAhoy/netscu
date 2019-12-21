@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.OperationMapper">
+    <insert id="AddOperation" parameterType="java.lang.String">
+        insert into operationlog(id, uid, postId, type, createTime) values (null, #{userId}, #{postId}, #{type}, current_timestamp );
+    </insert>
+
+    <select id="GetOperation" parameterType="java.lang.Integer" resultType="Map">
+        select * from
+        (select * from operationlog where uid = #{uid}) as o
+        natural join (select id as postId, title, uid as userid, summary, likeNum, viewNum, collectionNum from posts) as p
+        natural join (select id as userid, name from users) as u
+        order by createTime desc limit #{from}, #{to};
+    </select>
+</mapper>

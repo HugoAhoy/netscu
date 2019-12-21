@@ -23,19 +23,28 @@ public class PostService {
     @Autowired
     NotifyService notifyService;
 
+    @Autowired
+    OperationService operationService;
+
 
     public Map AddPost(Post post, String Id) {
         HashMap<String, Object> result = new HashMap<>();
         post.setUid(Id);
-        postMapper.Insert(post);
-        result.put("success", true);
-        result.put("id", post.getId());
+        if(postMapper.Insert(post) >= 1){
+            operationService.AddOperation(post.getUid(), "发布", post.getId());
+            result.put("success", true);
+            result.put("id", post.getId());
+        }
+        else {
+            result.put("success", false);
+        }
         return result;
     }
 
     public Map ModifyPost(Post post) {
         HashMap<String, Object> result = new HashMap<>();
         if(postMapper.ModifyById(post) >= 1){
+            operationService.AddOperation(post.getUid(), "编辑", post.getId());
             result.put("success", true);
             result.put("id", post.getId());
         }
@@ -48,6 +57,7 @@ public class PostService {
     public Map DeletePost(String userId, String id) {
         HashMap<String, Object> result = new HashMap<>();
         if(postMapper.DeleteById(userId, id) >= 1){
+            operationService.AddOperation(userId, "删帖", id);
             result.put("success", true);
         }
         else {
@@ -72,13 +82,15 @@ public class PostService {
 
     public Map CollectPost(String id, String userId) {
         HashMap<String, Object> result = new HashMap<>();
-        Boolean notifyOk = notifyService.AddNotification(id, userId, "收藏");
-
+        Boolean notifyOk;
         if(postMapper.CollectPost(id, userId) >= 1){
+            notifyOk = notifyService.AddNotification(id, userId, "收藏");
+            operationService.AddOperation(userId, "收藏", id);
             postMapper.IncCollect(id);
             result.put("success", true);
         }
         else {
+            notifyOk = false;
             result.put("success", false);
         }
         result.put("notify",notifyOk);
@@ -88,6 +100,7 @@ public class PostService {
     public Map UncollectPost(String id, String userId) {
         HashMap<String, Object> result = new HashMap<>();
         if(postMapper.UncollectPost(id, userId) >= 1){
+            operationService.AddOperation(userId, "取消收藏", id);
             postMapper.DecCollect(id);
             result.put("success", true);
         }
@@ -99,20 +112,25 @@ public class PostService {
 
     public Map LikePost(String id, String userId) {
         HashMap<String, Object> result = new HashMap<>();
-        Boolean notifyOk = notifyService.AddNotification(id, userId, "点赞");
+        Boolean notifyOk;
         if(postMapper.LikePost(id, userId) >= 1){
+            notifyOk = notifyService.AddNotification(id, userId, "点赞");
+            operationService.AddOperation(userId, "点赞", id);
             postMapper.IncLike(id);
             result.put("success", true);
         }
         else {
+            notifyOk = false;
             result.put("success", false);
         }
+        result.put("notify",notifyOk);
         return result;
     }
 
     public Map UnlikePost(String id, String userId) {
         HashMap<String, Object> result = new HashMap<>();
         if(postMapper.UnlikePost(id, userId) >= 1){
+            operationService.AddOperation(userId, "取消点赞", id);
             postMapper.DecLike(id);
             result.put("success", true);
         }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Mapper
 public interface PostMapper {
-    void Insert(Post post);
+    Integer Insert(Post post);
 
     Integer ModifyById(Post post);
 
