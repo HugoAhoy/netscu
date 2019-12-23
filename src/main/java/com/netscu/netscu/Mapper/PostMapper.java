@@ -19,7 +19,7 @@ public interface PostMapper {
 
     Integer DeleteById(String userId, String id);
 
-    List<Map> GetBasicInfo(Integer from, Integer to);
+    List<Map> GetBasicInfo(Integer from, Integer perNum);
 
     Map GetInfo(String id);
 
@@ -33,7 +33,7 @@ public interface PostMapper {
 
     Integer UnlikePost(String id, String userId);
 
-    List<Map> GetMyPost(Integer from, Integer to, Integer userId);
+    List<Map> GetMyPost(Integer from, Integer perNum, Integer userId);
 
     void IncLike(String id);
 
@@ -46,5 +46,7 @@ public interface PostMapper {
     void IncCollect(String id);
     void DecCollect(String id);
 
-    List<Map> GetCollection(Integer from, Integer to, Integer userId);
+    List<Map> GetCollection(Integer from, Integer perNum, Integer userId);
+
+    List<Map> GetBasicInfoByChannel(Integer from, Integer perNum, Integer id);
 }

@@ -202,5 +202,23 @@ public class PostController {
         return result;
     }
 
+    @CrossOrigin
+    @GetMapping("BasicInfoByChannel/{PageCount}/{PageNum}/{id}")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetBasicInfoByChannel(@PathVariable String PageCount, @PathVariable String PageNum, @PathVariable String id){
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = postService.GetBasicInfoByChannel(PageCount, PageNum, id);
+        if(Data.size() == Integer.parseInt(PageNum)){
+            result.put("Finish",false);
+        }
+        else{
+            result.put("Finish",true);
+        }
+        result.put("data",Data);
+        return result;
+    }
 
 }

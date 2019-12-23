@@ -37,9 +37,8 @@ public class CommentService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
         Integer sid = Integer.parseInt(supportId);
-        return commentMapper.SelBySupportId(sid,from, to);
+        return commentMapper.SelBySupportId(sid,from, pernum);
     }
 
     public void DeleteComment(String userId, String id) {

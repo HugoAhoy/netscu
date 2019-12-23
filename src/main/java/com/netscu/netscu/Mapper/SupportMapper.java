@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Mapper
 public interface SupportMapper {
-    List<Map> GetInfo(Integer uid, Integer id, Integer from, Integer to);
+    List<Map> GetInfo(Integer uid, Integer id, Integer from, Integer perNum);
 
     Integer AddSupport(Support support);
 

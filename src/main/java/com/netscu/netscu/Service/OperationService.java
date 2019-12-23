@@ -28,9 +28,8 @@ public class OperationService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
         Integer uid = Integer.parseInt(userId);
-        List<Map> Data = operationMapper.GetOperation(uid, from, to);
+        List<Map> Data = operationMapper.GetOperation(uid, from, pernum);
         if(Data.size() < pernum){
             result.put("Finish", true);
         }

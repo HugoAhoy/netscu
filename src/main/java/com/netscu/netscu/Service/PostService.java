@@ -75,8 +75,7 @@ public class PostService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
-        return postMapper.GetBasicInfo(from, to);
+        return postMapper.GetBasicInfo(from, pernum);
     }
 
     public Map GetInfo(String id) {
@@ -148,8 +147,7 @@ public class PostService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
-        return postMapper.GetMyPost(from, to, Integer.parseInt(userId));
+        return postMapper.GetMyPost(from, pernum, Integer.parseInt(userId));
     }
 
     public Boolean GetLikeStatus(String id, String userId) {
@@ -174,7 +172,14 @@ public class PostService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
-        return postMapper.GetCollection(from, to, Integer.parseInt(userId));
+        return postMapper.GetCollection(from, pernum, Integer.parseInt(userId));
+    }
+
+    public List<Map> GetBasicInfoByChannel(String pageCount, String pageNum, String id) {
+        Integer page = Integer.parseInt(pageCount);
+        Integer pernum = Integer.parseInt(pageNum);
+        Integer from = (page-1)*pernum;
+        Integer Id = Integer.parseInt(id);
+        return postMapper.GetBasicInfoByChannel(from, pernum, Id);
     }
 }

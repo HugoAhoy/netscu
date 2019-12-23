@@ -23,9 +23,8 @@ public class NotifyService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
         Integer uid = Integer.parseInt(userId);
-        List<Map> Data = notifyMapper.GetMyNotify(uid, from, to);
+        List<Map> Data = notifyMapper.GetMyNotify(uid, from, pernum);
         result.put("data", Data);
         Integer Unread = notifyMapper.GetMyUnread(uid);
         result.put("Unread", Unread);

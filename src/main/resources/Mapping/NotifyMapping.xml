@@ -7,7 +7,7 @@
         natural join (select id as postId, title, summary from posts  where uid = #{userId}) as p
         natural join (select name, id as uid from users) as u
         order by isRead ASC, createTime DESC
-        limit #{from}, #{to};
+        limit #{from}, #{perNum};
     </select>
 
     <update id="SetRead" parameterType="java.lang.String">

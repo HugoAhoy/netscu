@@ -25,8 +25,7 @@ public class SupportService {
         Integer page = Integer.parseInt(pageCount);
         Integer pernum = Integer.parseInt(pageNum);
         Integer from = (page-1)*pernum;
-        Integer to = page*pernum;
-        return supportMapper.GetInfo(userId, postId, from, to);
+        return supportMapper.GetInfo(userId, postId, from, pernum);
     }
 
     public Map AddSupport(Support support) {

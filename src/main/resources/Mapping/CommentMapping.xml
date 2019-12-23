@@ -10,7 +10,7 @@
         (select id, uid, supportId, content, fatherId, createTime from comments where supportId = #{supportId} and isDeleted = 0) as c
         natural join (select id as uid, name from users) as u
         order by createTime desc
-        limit #{from}, #{to};
+        limit #{from}, #{perNum};
     </select>
 
     <update id="DeleteById" parameterType="java.lang.String">

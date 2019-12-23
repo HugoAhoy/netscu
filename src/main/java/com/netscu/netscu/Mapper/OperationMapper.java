@@ -14,5 +14,5 @@ import java.util.Map;
 public interface OperationMapper {
     Integer AddOperation(String userId, String type, String postId);
 
-    List<Map> GetOperation(Integer uid, Integer from, Integer to);
+    List<Map> GetOperation(Integer uid, Integer from, Integer perNum);
 }

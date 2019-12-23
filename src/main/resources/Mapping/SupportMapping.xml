@@ -7,7 +7,7 @@
 			(select id, uid, postId, content, createTime, updateTime  from supports WHERE postId = #{id} and isDeleted = 0) as s
             natural join (select id as uid, name FROM users) as u
             left	join (select supportId, count(*) as count from comments where isDeleted = 0       group by supportId) as c on c.supportId = s.id
-            order by createTime limit #{from}, #{to};
+            order by createTime limit #{from}, #{perNum};
     </select>
 
     <insert id="AddSupport" parameterType="com.netscu.netscu.Entity.Support">

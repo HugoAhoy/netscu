@@ -14,7 +14,7 @@
     <select id="GetBasicInfo" parameterType="java.lang.Integer" resultType="Map">
         select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
             from posts where isDeleted = 0 order by createTime DESC
-             limit #{from}, #{to} ;
+             limit #{from}, #{perNum} ;
     </select>
 
     <select id="GetInfo" parameterType="java.lang.String" resultType="Map">
@@ -50,7 +50,7 @@
             from posts
             natural join (select id as uid, name from users where id = #{userId}) as u
             order by createTime
-            limit #{from}, #{to} ;
+            limit #{from}, #{perNum} ;
     </select>
 
     <update id="IncLike" parameterType="java.lang.String">
@@ -83,7 +83,15 @@
             from (select postId as id, createTime from collections where uid =#{userId} and isDeleted = 0) as c
             natural join (select id, uid, title, summary, collectionNum, viewNum, likeNum from posts) as p
             order by createTime
-             limit #{from}, #{to};
+             limit #{from}, #{perNum};
     </select>
+
+    <select id="GetBasicInfoByChannel" parameterType="java.lang.Integer" resultType="Map">
+        select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
+            from posts where isDeleted = 0 and cateId = #{id}
+            order by createTime DESC
+            limit #{from}, #{perNum} ;
+    </select>
+
 
 </mapper>

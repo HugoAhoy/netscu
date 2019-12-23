@@ -13,7 +13,7 @@ import java.util.Map;
 @Mapper
 public interface NotifyMapper {
 
-    List<Map> GetMyNotify(Integer userId,Integer from,Integer to);
+    List<Map> GetMyNotify(Integer userId,Integer from,Integer perNum);
 
     Integer SetRead(String id, String userId);
 
