@@ -45,4 +45,6 @@ public interface PostMapper {
 
     void IncCollect(String id);
     void DecCollect(String id);
+
+    List<Map> GetCollection(Integer from, Integer to, Integer userId);
 }

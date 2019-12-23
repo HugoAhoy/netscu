@@ -42,4 +42,14 @@ public class NotifyController {
         String userId = TokenUtil.getTokenUserId();
         return notifyService.SetRead(id, userId);
     }
+
+    @PutMapping("Allread")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map SetAllRead(){
+        String userId = TokenUtil.getTokenUserId();
+        return notifyService.SetAllRead(userId);
+
+    }
 }

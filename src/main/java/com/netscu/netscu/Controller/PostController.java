@@ -128,7 +128,7 @@ public class PostController {
     }
 
     @CrossOrigin
-    @GetMapping("MyPost/{PageCount}/{PageNum}")
+    @GetMapping({"UserPost/{PageCount}/{PageNum}"})
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
     public Map GetMyPost(@PathVariable String PageCount, @PathVariable String PageNum){
@@ -137,6 +137,61 @@ public class PostController {
         System.out.println("NumPerPage："+PageNum);
         HashMap<String ,Object> result = new HashMap<>();
         List<Map> Data = postService.GetMyPost(PageCount, PageNum, userId);
+        if(Data.size() == Integer.parseInt(PageNum)){
+            result.put("Finish",false);
+        }
+        else{
+            result.put("Finish",true);
+        }
+        result.put("data",Data);
+        return result;
+    }
+
+    @CrossOrigin
+    @GetMapping({"UserPost/{PageCount}/{PageNum}/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetOthersPost(@PathVariable String PageCount, @PathVariable String PageNum, @PathVariable String id){
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = postService.GetMyPost(PageCount, PageNum, id);
+        if(Data.size() == Integer.parseInt(PageNum)){
+            result.put("Finish",false);
+        }
+        else{
+            result.put("Finish",true);
+        }
+        result.put("data",Data);
+        return result;
+    }
+
+    @CrossOrigin
+    @GetMapping({"Collection/{PageCount}/{PageNum}/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetOthersCollection(@PathVariable String PageCount, @PathVariable String PageNum, @PathVariable String id){
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = postService.GetCollection(PageCount, PageNum, id);
+        if(Data.size() == Integer.parseInt(PageNum)){
+            result.put("Finish",false);
+        }
+        else{
+            result.put("Finish",true);
+        }
+        result.put("data",Data);
+        return result;
+    }
+
+    @CrossOrigin
+    @GetMapping({"Collection/{PageCount}/{PageNum}"})
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetMyCollection(@PathVariable String PageCount, @PathVariable String PageNum){
+        String userId = TokenUtil.getTokenUserId();
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = postService.GetCollection(PageCount, PageNum, userId);
         if(Data.size() == Integer.parseInt(PageNum)){
             result.put("Finish",false);
         }

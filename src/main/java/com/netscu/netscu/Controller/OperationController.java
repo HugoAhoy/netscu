@@ -24,10 +24,17 @@ public class OperationController {
 
     @GetMapping("{PageCount}/{PageNum}")
     @ResponseStatus(HttpStatus.OK)
-    public Map GetOperation(@PathVariable String PageCount, @PathVariable String PageNum){
+    public Map GetMyOperation(@PathVariable String PageCount, @PathVariable String PageNum){
         String userId = TokenUtil.getTokenUserId();
         return operationService.GetOperation(userId, PageCount, PageNum);
     }
+
+    @GetMapping("{PageCount}/{PageNum}/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetOthersOperation(@PathVariable String PageCount, @PathVariable String PageNum, @PathVariable String id){
+        return operationService.GetOperation(id, PageCount, PageNum);
+    }
+
 
     @GetMapping("Test/{id}")
     @ResponseStatus(HttpStatus.OK)

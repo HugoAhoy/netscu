@@ -36,6 +36,7 @@ public class UserService {
         result.put("fansNum", fanNum);
         result.put("followed", followed);
         result.put("followNum", followNum);
+        result.put("me", id.equals(MyId));
         return result;
     }
 
@@ -121,5 +122,21 @@ public class UserService {
             result.put("success", false);
         }
         return result;
+    }
+
+    public Map GetFollow(String id, String userId) {
+        HashMap<String, Object> result = new HashMap<>();
+        List<Map> Data =  userMapper.GetFollower(id, userId);
+        result.put("uid", userId);
+        result.put("data", Data);
+        return  result;
+    }
+
+    public Map GetFan(String id, String userId) {
+        HashMap<String, Object> result = new HashMap<>();
+        List<Map> Data =  userMapper.GetFan(id, userId);
+        result.put("uid", userId);
+        result.put("data", Data);
+        return  result;
     }
 }

@@ -2,9 +2,11 @@ package com.netscu.netscu.Controller;
 
 import com.netscu.netscu.Annotations.UserLoginToken;
 import com.netscu.netscu.Common.TokenUtil;
+import com.netscu.netscu.Entity.Support;
 import com.netscu.netscu.Service.SupportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.UsesSunMisc;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -43,4 +45,23 @@ public class SupportController {
         return result;
     }
 
+
+    @PostMapping("Add")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map AddSupport(@RequestBody Support support){
+        String userId =TokenUtil.getTokenUserId();
+        support.setUid(userId);
+        return supportService.AddSupport(support);
+    }
+
+
+    @PutMapping("Delete")
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map DeleteSupport(@RequestBody Support support){
+        String userId =TokenUtil.getTokenUserId();
+        support.setUid(userId);
+        return supportService.DeleteSupport(support);
+    }
 }

@@ -36,15 +36,38 @@ public class CommentController {
         return commentService.AddComment(comment);
     }
 
+    @GetMapping("{supportId}/{PageCount}/{PageNum}")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.OK)
+    public Map GetComment(@PathVariable String supportId, @PathVariable String PageCount, @PathVariable String PageNum){
+        System.out.println("Page："+PageCount);
+        System.out.println("NumPerPage："+PageNum);
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = commentService.GetComment(supportId, PageCount, PageNum);
+        if(Data.size() < Integer.parseInt(PageNum)){
+            result.put("Finish",true);
+        }
+        else{
+            result.put("Finish",false);
+        }
+        result.put("data",Data);
+        return result;
+    }
+
     @GetMapping("{supportId}")
     @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)
-    public Map AddComment(@PathVariable String supportId){
-        return commentService.GetComment(supportId);
+    public Map GetAllComment(@PathVariable String supportId){
+        HashMap<String ,Object> result = new HashMap<>();
+        List<Map> Data = commentService.GetAllComment(supportId);
+        result.put("data",Data);
+        return result;
     }
 
-    @DeleteMapping("{id}")
+
+    @PutMapping("{id}")
     @CrossOrigin
     @UserLoginToken
     @ResponseStatus(HttpStatus.OK)

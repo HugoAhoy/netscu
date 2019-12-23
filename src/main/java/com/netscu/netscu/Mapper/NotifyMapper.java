@@ -20,4 +20,6 @@ public interface NotifyMapper {
     Integer AddNotify(String id, String userId, String type);
 
     Integer GetMyUnread(Integer uid);
+
+    Integer SetAllRead(String userId);
 }

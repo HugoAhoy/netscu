@@ -14,6 +14,8 @@ import java.util.Map;
 @Mapper
 public interface CommentMapper {
     Integer Insert(Comment comment);
-    List<Map> SelBySupportId(String supportId);
+    List<Map> SelBySupportId(Integer supportId, Integer from, Integer to);
     Integer DeleteById(String userId, String id);
+
+    List<Map> GetAllComment(String supportId);
 }

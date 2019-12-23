@@ -1,5 +1,6 @@
 package com.netscu.netscu.Mapper;
 
+import com.netscu.netscu.Entity.Support;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,8 @@ import java.util.Map;
 @Mapper
 public interface SupportMapper {
     List<Map> GetInfo(Integer uid, Integer id, Integer from, Integer to);
+
+    Integer AddSupport(Support support);
+
+    Integer DeleteSupport(Support support);
 }

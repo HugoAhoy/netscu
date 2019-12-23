@@ -2,9 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.netscu.netscu.Mapper.SupportMapper">
     <select id="GetInfo" parameterType="java.lang.Integer" resultType="Map">
-        select supports.id, uid, name, content, supports.createTime, supports.updateTime
-            from supports, users
-            where uid = users.id and supports.postId = #{id}
-            order by supports.createTime limit #{from}, #{to};
+        select id, uid, name, content, createTime, updateTime, count
+            from
+			(select id, uid, postId, content, createTime, updateTime  from supports WHERE postId = #{id} and isDeleted = 0) as s
+            natural join (select id as uid, name FROM users) as u
+            left	join (select supportId, count(*) as count from comments where isDeleted = 0       group by supportId) as c on c.supportId = s.id
+            order by createTime limit #{from}, #{to};
     </select>
+
+    <insert id="AddSupport" parameterType="com.netscu.netscu.Entity.Support">
+        insert into supports(id, uid, postId, content, createTime, isDeleted) values (null, #{uid}, #{postId}, #{content}, current_timestamp, 0);
+    </insert>
+    
+    <update id="DeleteSupport" parameterType="com.netscu.netscu.Entity.Support">
+        update supports set isDeleted = 1 where id =#{id} and uid=#{uid};
+    </update>
 </mapper>

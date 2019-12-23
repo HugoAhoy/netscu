@@ -86,6 +86,44 @@ public class UserController {
     }
 
 
+    @GetMapping("MyFollow/{id}")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map Getfollower(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return userService.GetFollow(id, userId);
+    }
+
+    @GetMapping("MyFollow")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map Getfollower(){
+        String userId = TokenUtil.getTokenUserId();
+        return userService.GetFollow(userId, userId);
+    }
+
+    @GetMapping("MyFan/{id}")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map Getfan(@PathVariable String id){
+        String userId = TokenUtil.getTokenUserId();
+        return userService.GetFan(id, userId);
+    }
+
+    @GetMapping("MyFan")
+    @CrossOrigin
+    @UserLoginToken
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map Getfan(){
+        String userId = TokenUtil.getTokenUserId();
+        return userService.GetFan(userId, userId);
+    }
+
+
+
     @RequestMapping("LogTokenTest")
     @CrossOrigin
     @UserLoginToken

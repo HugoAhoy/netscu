@@ -31,11 +31,15 @@ public class CommentService {
         return result;
     }
 
-    public Map GetComment(String supportId) {
-        HashMap<String, Object> result = new HashMap<>();
-        List<Map> Data = commentMapper.SelBySupportId(supportId);
-        result.put("data", Data);
-        return result;
+    public List<Map> GetComment(String supportId, String pageCount, String pageNum) {
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("data", Data);
+        Integer page = Integer.parseInt(pageCount);
+        Integer pernum = Integer.parseInt(pageNum);
+        Integer from = (page-1)*pernum;
+        Integer to = page*pernum;
+        Integer sid = Integer.parseInt(supportId);
+        return commentMapper.SelBySupportId(sid,from, to);
     }
 
     public void DeleteComment(String userId, String id) {
@@ -44,5 +48,9 @@ public class CommentService {
         else {
             throw new RuntimeException("无可用的资源");
         }
+    }
+
+    public List<Map> GetAllComment(String supportId) {
+        return commentMapper.GetAllComment(supportId);
     }
 }

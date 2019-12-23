@@ -30,6 +30,10 @@ public class PostService {
     public Map AddPost(Post post, String Id) {
         HashMap<String, Object> result = new HashMap<>();
         post.setUid(Id);
+        String summary = post.getSummary();
+        if(summary.length() > 50){
+            post.setSummary(summary.substring(0,47)+"...");
+        }
         if(postMapper.Insert(post) >= 1){
             operationService.AddOperation(post.getUid(), "发布", post.getId());
             result.put("success", true);
@@ -57,7 +61,7 @@ public class PostService {
     public Map DeletePost(String userId, String id) {
         HashMap<String, Object> result = new HashMap<>();
         if(postMapper.DeleteById(userId, id) >= 1){
-            operationService.AddOperation(userId, "删帖", id);
+            operationService.AddOperation(userId, "删除", id);
             result.put("success", true);
         }
         else {
@@ -164,5 +168,13 @@ public class PostService {
         else{
             return false;
         }
+    }
+
+    public List<Map> GetCollection(String pageCount, String pageNum, String userId) {
+        Integer page = Integer.parseInt(pageCount);
+        Integer pernum = Integer.parseInt(pageNum);
+        Integer from = (page-1)*pernum;
+        Integer to = page*pernum;
+        return postMapper.GetCollection(from, to, Integer.parseInt(userId));
     }
 }

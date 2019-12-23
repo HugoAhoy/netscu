@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.netscu.netscu.Mapper.PostMapper">
     <insert id="Insert" parameterType="com.netscu.netscu.Entity.Post" useGeneratedKeys="true" keyProperty="id">
-        insert into posts(id, uid, cateId, title, summary, content, viewNum, likeNum, collectionNum, supportNum, createTime) values (null, #{uid}, #{cateId}, #{title}, #{summary}, #{content}, 0, 0, 0, 0, current_timestamp );
+        insert into posts(id, uid, cateId, title, summary, content, viewNum, likeNum, collectionNum, supportNum, createTime, isDeleted) values (null, #{uid}, #{cateId}, #{title}, #{summary}, #{content}, 0, 0, 0, 0, current_timestamp, 0 );
     </insert>
     <update id="ModifyById" parameterType="com.netscu.netscu.Entity.Post">
         update posts set cateId = #{cateId}, title=#{title}, summary=#{summary}, content=#{content} where id = #{id} and uid=#{uid};
     </update>
-    <delete id="DeleteById" parameterType="java.lang.String">
-        delete from posts where id =#{id} and uid =#{userId};
-    </delete>
+    <update id="DeleteById" parameterType="java.lang.String">
+        update posts set isDeleted = 1 where id =#{id} and uid =#{userId};
+    </update>
 
     <select id="GetBasicInfo" parameterType="java.lang.Integer" resultType="Map">
         select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
-            from posts order by createTime DESC
+            from posts where isDeleted = 0 order by createTime DESC
              limit #{from}, #{to} ;
     </select>
 
@@ -22,11 +22,11 @@
             from posts
             natural join (select id as cateId,name as cateName FROM categories) as c
             natural join (select id as uid, name from users) as u
-            where id = #{id};
+            where id = #{id} and isDeleted = 0;
      </select>
 
     <update id="AddView" parameterType="java.lang.String">
-        update posts set viewNum = viewNum+'1' where id = #{id};
+        update posts set viewNum = viewNum+'1' where id = #{id} and isDeleted = 0;
     </update>
 
     <insert id="CollectPost" parameterType="java.lang.String">
@@ -46,9 +46,11 @@
     </update>
 
     <select id="GetMyPost" parameterType="java.lang.Integer" resultType="Map">
-        select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
-            from posts where id =#{userId} order by createTime
-             limit #{from}, #{to} ;
+        select id, uid, name, title, summary, createTime, updateTime, collectionNum, viewNum, likeNum
+            from posts
+            natural join (select id as uid, name from users where id = #{userId}) as u
+            order by createTime
+            limit #{from}, #{to} ;
     </select>
 
     <update id="IncLike" parameterType="java.lang.String">
@@ -74,6 +76,14 @@
 
     <select id="GetCollectStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from collections where uid =#{userId} and postId=#{id} and isDeleted = 0;
+    </select>
+
+    <select id="GetCollection" parameterType="java.lang.Integer" resultType="Map">
+        select id, uid, title, summary, createTime, collectionNum, viewNum, likeNum
+            from (select postId as id, createTime from collections where uid =#{userId} and isDeleted = 0) as c
+            natural join (select id, uid, title, summary, collectionNum, viewNum, likeNum from posts) as p
+            order by createTime
+             limit #{from}, #{to};
     </select>
 
 </mapper>

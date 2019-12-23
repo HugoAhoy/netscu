@@ -30,4 +30,7 @@ public interface UserMapper {
 
     List<Map> Test();
 
+    List<Map> GetFollower(String id, String userId);
+
+    List<Map> GetFan(String id, String userId);
 }

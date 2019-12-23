@@ -54,4 +54,15 @@ public class NotifyService {
             return false;
         }
     }
+
+    public Map SetAllRead(String userId) {
+        HashMap<String, Object> result = new HashMap<>();
+        if(notifyMapper.SetAllRead(userId) >= 1){
+            result.put("success", true);
+        }
+        else{
+            result.put("success", false);
+        }
+        return result;
+    }
 }

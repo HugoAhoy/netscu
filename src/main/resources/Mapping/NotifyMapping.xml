@@ -20,4 +20,8 @@
     <select id="GetMyUnread" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(id) from notifications where toUid = #{uid} and isRead = 0;
     </select>
+
+    <update id="SetAllRead" parameterType="java.lang.String">
+        update notifications set isRead = 1 where toUid=#{userId};
+    </update>
 </mapper>
