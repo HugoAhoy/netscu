@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netscu.netscu.Mapper.SearchMapper">
+
+    <select id="GetBasicInfo" parameterType="hashmap" resultType="Map">
+        select id, uid, title, summary, createTime, updateTime, collectionNum, viewNum
+            from posts where isDeleted = 0 and
+            <foreach collection="Q" separator=" or " item="keyword">
+                content like #{keyword} or title like #{keyword}
+            </foreach>
+
+            order by createTime DESC
+             limit #{from}, #{perNum} ;
+    </select>
+
+</mapper>

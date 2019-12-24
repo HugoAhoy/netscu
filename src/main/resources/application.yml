@@ -16,5 +16,7 @@ mybatis:
 logging:
   level:
     com:
-      example:
-        mapper : debug
+      netscu:
+        netscu:
+          Mapper:
+            SearchMapper: debug

@@ -29,7 +29,7 @@ public class UserService {
         Integer fanNum = userMapper.GetFansNum(id);
         Integer collectionNum = userMapper.GetCollectionNum(id);
         Integer postNum = userMapper.GetPostNum(id);
-        Boolean followed = (userMapper.GetFollowed(MyId, id) > 0);
+        Boolean followed = (userMapper.GetFollowed(id, MyId) > 0);
         Integer followNum = userMapper.GetFollowNum(id);
         result.put("postNum", postNum);
         result.put("collectNum", collectionNum);
