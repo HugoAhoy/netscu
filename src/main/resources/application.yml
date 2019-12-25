@@ -19,4 +19,4 @@ logging:
       netscu:
         netscu:
           Mapper:
-            SearchMapper: debug
+            UserMapper: debug

@@ -49,7 +49,7 @@
         select id, uid, name, title, summary, createTime, updateTime, collectionNum, viewNum, likeNum
             from posts
             natural join (select id as uid, name from users where id = #{userId}) as u
-            order by createTime
+            order by createTime DESC
             limit #{from}, #{perNum} ;
     </select>
 
@@ -82,7 +82,7 @@
         select id, uid, title, summary, createTime, collectionNum, viewNum, likeNum
             from (select postId as id, createTime from collections where uid =#{userId} and isDeleted = 0) as c
             natural join (select id, uid, title, summary, collectionNum, viewNum, likeNum from posts) as p
-            order by createTime
+            order by createTime desc
              limit #{from}, #{perNum};
     </select>
 

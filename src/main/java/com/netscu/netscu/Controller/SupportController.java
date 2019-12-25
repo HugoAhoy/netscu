@@ -34,11 +34,12 @@ public class SupportController {
         System.out.println("NumPerPage："+pageNum);
         HashMap<String ,Object> result = new HashMap<>();
         List<Map> Data = supportService.GetInfo(userId, id, pageCount, pageNum);
-        if(Data.size() == Integer.parseInt(pageCount)){
-            result.put("Finish",false);
+        System.out.println("Datasize"+Data.size());
+        if(Data.size() < Integer.parseInt(pageNum)){
+            result.put("Finish",true);
         }
         else{
-            result.put("Finish",true);
+            result.put("Finish",false);
         }
         result.put("uid", userId);
         result.put("data",Data);

@@ -78,24 +78,36 @@
     </insert>
 
     <select id="GetFollower" parameterType="java.lang.String" resultType="Map">
-        select u.id, name, description, asFan
-        from
-        (SELECT id, name, description from users
-        where id in (SELECT followId as id from follows where fanId=#{id})) as u
-        left join
-        (SELECT followId as id, fanId as asFan from follows
-        where followId in (SELECT fanId as id from follows where followId=#{userId})) as f
-        on f.id = u.id;
-    </select>
+        SELECT
+            u.id,
+            name,
+            description,
+            asFan
+        FROM
+            ( SELECT id, name, description FROM
+                users
+                WHERE id
+                IN ( SELECT followId AS id FROM follows WHERE fanId =#{id} ) ) AS u
+            LEFT JOIN ( SELECT followId AS id, fanId AS asFan FROM
+                follows
+                WHERE fanId = #{userId} ) AS f
+            ON f.id = u.id;
+	</select>
 
     <select id="GetFan" parameterType="java.lang.String" resultType="Map">
-        select u.id, name, description, asFan
-        from
-        (SELECT id, name, description from users
-        where id in (SELECT fanId as id from follows where followId=#{id})) as u
-        left join
-        (SELECT followId as id, fanId as asFan from follows
-        where followId in (SELECT fanId as id from follows where followId=#{userId})) as f
-        on f.id = u.id;
+        SELECT
+            u.id,
+            name,
+            description,
+            asFan
+        FROM
+            ( SELECT id, name, description FROM
+                users
+                WHERE id
+                IN ( SELECT fanId AS id FROM follows WHERE followId =#{id} ) ) AS u
+            LEFT JOIN ( SELECT followId AS id, fanId AS asFan FROM
+                follows
+                WHERE fanId = #{userId} ) AS f
+            ON f.id = u.id;
     </select>
 </mapper>
